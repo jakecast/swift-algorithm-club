@@ -5,35 +5,43 @@
 */
 
 
-func radixSort(arr: inout [Int]) {
-    let radix = 10
+func radixSort(inout arr: [Int] ) {
 
-    var digit: Int = 1
-    var largest: Int = 0
 
-    var buckets: [[Int]]
-    var index: Int
-    var pos: Int
+  let radix = 10  //Here we define our radix to be 10
+  var done = false
+  var index: Int
+  var digit = 1  //Which digit are we on?
 
-    repeat {
-        pos = 0
-        buckets = Array(repeatElement([], count: 10))
 
-        for num in arr {
-            index = num / digit
-            buckets[index % radix].append(num)
+  while !done {  //While our  sorting is not completed
+    done = true  //Assume it is done for now
 
-            if digit == 1 {
-                largest = max(largest, num)
-            }
-        }
-        for bin in buckets {
-            for num in bin {
-                arr[pos] = num
-                pos = pos + 1
-            }
-        }
+    var buckets: [[Int]] = []  //Our sorting subroutine is bucket sort, so let us predefine our buckets
 
-        digit = digit * radix
-    } while digit < largest
+    for _ in 1...radix {
+      buckets.append([])
+    }
+
+
+    for number in arr {
+      index = number / digit  //Which bucket will we access?
+      buckets[index % radix].append(number)
+      if done && index > 0 {  //If we arent done, continue to finish, otherwise we are done
+        done = false
+      }
+    }
+
+    var i = 0
+
+    for j in 0..<radix {
+      let bucket = buckets[j]
+      for number in bucket {
+        arr[i] = number
+        i += 1
+      }
+    }
+
+    digit *= radix  //Move to the next digit
+  }
 }
