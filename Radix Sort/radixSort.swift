@@ -17,7 +17,7 @@ func radixSort(arr: inout [Int]) {
 
     repeat {
         pos = 0
-        buckets = Array(repeatElement([], count: 10))
+        buckets = Array(repeatElement([], count: radix))
 
         for num in arr {
             index = num / digit
